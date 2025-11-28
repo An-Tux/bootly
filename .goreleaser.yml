@@ -5,9 +5,15 @@ before:
     - go mod tidy
 
 builds:
-  - main: ./cmd/
-  - env:
+  - id: bootly
+    main: ./cmd
+    binary: bootly
+    env:
       - CGO_ENABLED=0
+    flags:
+      - -v
+    ldflags:
+      - -s -w -X main.version={{.Version}} -X main.commit={{.Commit}}
     goos:
       - linux
       - windows
@@ -18,23 +24,10 @@ builds:
 
 archives:
   - format: tar.gz
-    name_template: >-
-      {{ .ProjectName }}_
-      {{- title .Os }}_
-      {{- if eq .Arch "amd64" }}x86_64
-      {{- else if eq .Arch "386" }}i386
-      {{- else }}{{ .Arch }}{{ end }}
-      {{- if .Arm }}v{{ .Arm }}{{ end }}
+    name_template: "{{ .ProjectName }}_{{ .Os }}_{{ .Arch }}"
 
 checksum:
-  name_template: 'checksums.txt'
-
-snapshot:
-  name_template: "{{ incpatch .Version }}-next"
+  name_template: "checksums.txt"
 
 changelog:
   sort: asc
-  filters:
-    exclude:
-      - '^docs:'
-      - '^test:'
