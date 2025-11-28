@@ -16,7 +16,7 @@ import (
 	"github.com/charmbracelet/lipgloss"
 	"github.com/spf13/cobra"
 	"gopkg.in/yaml.v3"
-	"test/pkg/templateengine"
+	"test/pkg/template"
 )
 
 // Data holds the user inputs for template generation.
